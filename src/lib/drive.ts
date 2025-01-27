@@ -15,7 +15,7 @@ export async function uploadToDrive(filePath: string, fileName: string): Promise
     const response = await drive.files.create({
       requestBody: {
         name: fileName, // File name in Google Drive
-        parents: ['1jcPktG1XHurZPLzBuXdM2_oKXSvYuaXJ'], // Replace with your Drive folder ID
+        parents: [''], // Replace with your Drive folder ID
       },
       media: {
         mimeType: 'application/octet-stream',
