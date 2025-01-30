@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 import { createReadStream } from 'fs';
 
-const auth = new google.auth.GoogleAuth({
+export const auth = new google.auth.GoogleAuth({
   keyFile: './credentials.json', // Replace with the actual path to your service account key file
   scopes: ['https://www.googleapis.com/auth/drive.file'],
 });

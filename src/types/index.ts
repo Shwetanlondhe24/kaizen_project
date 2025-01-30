@@ -1,19 +1,23 @@
 // src/types/index.ts
-export interface UploadedFile {
-    subject: string;
-    date: string;
-    fileName: string;
-    driveFileId: string;
-  }
-  
-  export interface UploadResponse {
-    success: boolean;
-    message: string;
-    results?: UploadedFile[];
-    error?: string;
-  }
-  
- 
 
-  
- 
+export interface KaizenReport {
+  id: number;
+  theme: string;
+  idea: string;
+  period: string;
+  fileName: string;
+  driveFileId: string;
+  uploadDate: string;
+}
+
+export interface UploadResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+export interface SearchFilters {
+  theme?: string;
+  idea?: string;
+  period?: string;
+}
