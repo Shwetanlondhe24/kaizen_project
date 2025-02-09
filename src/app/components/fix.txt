@@ -1,3 +1,177 @@
+//src/app/components/ SearchFilters.tsx
+import { useState } from 'react';
+import type { SearchFilters as SearchFiltersType } from '@/types';
+import { THEMES, DEPTS } from '@/constants';
+
+interface Props {
+  onSearch: (filters: SearchFiltersType) => void;
+}
+
+interface LocalSearchFilters {
+  theme: string;
+  dept: string;
+  upload_date: string;
+}
+
+export default function SearchFilters({ onSearch }: Props) {
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: currentYear - 1997 + 1 }, (_, i) => 1997 + i).reverse();
+
+  const [filters, setFilters] = useState<LocalSearchFilters>({
+    theme: '',
+    dept: '',
+    upload_date: ''
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearch = async () => {
+    setIsLoading(true);
+    try {
+      // Only include non-empty filters
+      const activeFilters: Partial<LocalSearchFilters> = {};
+      if (filters.theme) activeFilters.theme = filters.theme;
+      if (filters.dept) activeFilters.dept = filters.dept;
+      if (filters.upload_date) activeFilters.upload_date = filters.upload_date;
+
+      await onSearch(activeFilters);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="text-black grid grid-cols-3 gap-4">
+        <select
+          value={filters.theme}
+          onChange={(e) => setFilters({ ...filters, theme: e.target.value })}
+          className="rounded-md border-black-300 shadow-sm w-full"
+        >
+          <option value="">All Themes</option>
+          {THEMES.map((theme) => (
+            <option key={theme} value={theme}>{theme}</option>
+          ))}
+        </select>
+
+        <select
+          value={filters.dept}
+          onChange={(e) => setFilters({ ...filters, dept: e.target.value })}
+          className="rounded-md border-gray-300 shadow-sm w-full"
+        >
+          <option value="">All Departments</option>
+          {DEPTS.map((dept) => (
+            <option key={dept} value={dept}>{dept}</option>
+          ))}
+        </select>
+
+        <select
+          value={filters.upload_date}
+          onChange={(e) => setFilters({ ...filters, upload_date: e.target.value })}
+          className="rounded-md border-gray-300 shadow-sm w-full"
+        >
+          <option value="">Select Year</option>
+          {years.map((year) => (
+            <option key={year} value={year.toString()}>{year}</option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        onClick={handleSearch}
+        className="w-full bg-blue-500 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        disabled={isLoading}
+      >
+        {isLoading ? 'Searching...' : 'Search'}
+      </button>
+    </div>
+  );
+}
+
+
+//src/app/api/search/ route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import pool from '@/lib/db';
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const theme = searchParams.get('theme');
+    const dept = searchParams.get('dept');
+    const upload_date = searchParams.get('upload_date');
+
+    let query = `
+      SELECT 
+        id,
+        theme,
+        dept,
+        file_name as fileName,
+        drive_file_id as driveFileId,
+        DATE_FORMAT(upload_date, '%Y-%m-%d') as uploadDate
+      FROM kaizen_reports 
+      WHERE 1=1
+    `;
+
+    const params = [];
+
+    if (theme) {
+      query += ' AND theme = ?';
+      params.push(theme);
+    }
+
+    if (dept) {
+      query += ' AND dept = ?';
+      params.push(dept);
+    }
+
+    if (upload_date) {
+      query += ' AND YEAR(upload_date) = ?';
+      params.push(upload_date);
+    }
+
+    query += ' ORDER BY upload_date DESC';
+
+    console.log('Executing query:', query);
+    console.log('With parameters:', params);
+
+    const [results] = await pool.execute(query, params);
+    return NextResponse.json({ success: true, results });
+  } catch (error) {
+    console.error('Search error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Search failed' },
+      { status: 500 }
+    );
+  }
+}
+
+
+ src/types/index.ts
+
+export interface KaizenReport {
+  id: number;
+  theme: string;
+  dept: string;
+  //period: string;
+  fileName: string;
+  driveFileId: string;
+  uploadDate: string;
+}
+
+export interface UploadResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+export interface SearchFilters {
+  theme?: string;
+  dept?: string;
+  uploadDate?: string;
+}
+
+
+//src/app/components/ FileName.tsx
 import { useState } from 'react';
 import type { KaizenReport } from '@/types';
 

@@ -10,10 +10,10 @@ export async function POST(request: NextRequest) {
     const data = await request.formData();
     const file = data.get('file') as File;
     const theme = data.get('theme') as string;
-    const idea = data.get('idea') as string;
+    const dept = data.get('dept') as string;
     const period = data.get('period') as string;
 
-    if (!file || !theme || !idea || !period) {
+    if (!file || !theme || !dept || !period) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
         { status: 400 }
@@ -36,13 +36,13 @@ export async function POST(request: NextRequest) {
 
     // Upload to Google Drive
     const driveFileId = await uploadToDrive(tempPath, file.name);
-
-    // Store in database
-    const [result] = await pool.execute(
-      'INSERT INTO kaizen_reports (theme, idea, period, file_name, drive_file_id, upload_date) VALUES (?, ?, ?, ?, ?, ?)',
-      [theme, idea, period, file.name, driveFileId, new Date().toISOString().split('T')[0]]
-    );
-
+    const periodDate = new Date(period);
+    const formattedPeriod = new Date(periodDate.getTime() - (periodDate.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+   // Store in database
+const [result] = await pool.execute(
+  'INSERT INTO kaizen_reports (theme, dept, file_name, drive_file_id, upload_date) VALUES (?, ?, ?, ?, ?)',
+  [theme, dept, file.name, driveFileId, formattedPeriod]
+);
     return NextResponse.json({ success: true, message: 'File uploaded successfully' });
   } catch (error) {
     console.error('Upload error:', error);

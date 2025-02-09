@@ -1,4 +1,3 @@
-// src/app/components/Analytics.tsx
 import { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -6,13 +5,13 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'
 
 interface AnalyticsData {
   theme: string;
-  idea: string;
+  dept: string;
   count: number;
 }
 
 export default function Analytics() {
   const [themeData, setThemeData] = useState<AnalyticsData[]>([]);
-  const [ideaData, setIdeaData] = useState<AnalyticsData[]>([]);
+  const [deptData, setDeptData] = useState<AnalyticsData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -25,7 +24,7 @@ export default function Analytics() {
         const data = await response.json();
         if (data.success) {
           setThemeData(data.themeData);
-          setIdeaData(data.ideaData);
+          setDeptData(data.deptData);
         } else {
           throw new Error(data.error);
         }
@@ -68,7 +67,7 @@ export default function Analytics() {
         </div>
         <div className="bg-purple-50 p-6 rounded-lg">
           <h4 className="text-purple-800 text-lg font-medium mb-2">Total Departments</h4>
-          <p className="text-3xl font-bold text-purple-900">{ideaData.length}</p>
+          <p className="text-3xl font-bold text-purple-900">{deptData.length}</p>
         </div>
       </div>
 
@@ -76,7 +75,7 @@ export default function Analytics() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Theme Distribution - Pie Chart */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h3 className="text-lg font-medium mb-4">Theme Distribution</h3>
+          <h3 className="text-black text-lg font-medium mb-4">Theme Distribution</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -100,12 +99,12 @@ export default function Analytics() {
 
         {/* Department Distribution - Bar Chart */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h3 className="text-lg font-medium mb-4">Department Distribution</h3>
+          <h3 className="text-black text-lg font-medium mb-4">Department Distribution</h3>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={ideaData}>
-              <XAxis dataKey="idea" />
+            <BarChart data={deptData}>
+              <XAxis dataKey="dept" />
               <YAxis />
-              <Tooltip />
+              <Tooltip contentStyle={{ backgroundColor: '#fff', color: '#000' }} />
               <Legend />
               <Bar dataKey="count" fill="#8884d8" name="Number of Reports" />
             </BarChart>

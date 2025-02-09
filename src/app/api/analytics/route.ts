@@ -13,17 +13,17 @@ export async function GET(request: NextRequest) {
     `);
 
     // Get idea (department) distribution
-    const [ideaResults] = await pool.execute(`
-      SELECT idea, COUNT(*) as count
+    const [deptResults] = await pool.execute(`
+      SELECT dept, COUNT(*) as count
       FROM kaizen_reports
-      GROUP BY idea
+      GROUP BY dept
       ORDER BY count DESC
     `);
 
     return NextResponse.json({
       success: true,
       themeData: themeResults,
-      ideaData: ideaResults
+      deptData: deptResults
     });
   } catch (error) {
     console.error('Analytics error:', error);
