@@ -1,10 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kaizen Management System
 
-## Kaizen Bank Web App
+**Project –** Kaizen Management System  
+**Role –** Team Leader and Full Stack Developer  
+**Tech Stack –** Next.js (TypeScript), Supabase, Google Drive API, Vercel, Figma  
+**Live Project –** [https://kaizen-bank.vercel.app/](https://kaizen-bank.vercel.app/)  
+**GitHub –** [https://github.com/Shwetanlondhe24/kaizen_project](https://github.com/Shwetanlondhe24/kaizen_project)
 
-Developed for Mask Polymer Pvt. Ltd.
-In this web app, the employee can upload and search kaizens based on different filters. It also provides analytics on reports which are submitted.
+---
 
-## Deployed on Vercel
+## 🧩 Problem Statement
 
-You can check out the web application using this link - (https://kaizen-bank.vercel.app/)
+Mask Polymers Pvt. Ltd. provided a real-world problem faced in their operations — the lack of a centralized, digital system to manage Kaizen reports. Their existing process relied on manual report submissions, making it difficult to organize, search, and analyze improvement ideas across departments. They needed a platform that could streamline report management, ensure secure document storage, and offer insights through data visualization.
+
+---
+
+## 💡 Our Solution
+
+To address this, we developed a Kaizen Management System as an academic project in collaboration with the company. I led the project as a team leader and full stack developer, building the entire system using Next.js, Supabase, and the Google Drive API.
+
+The system includes features for uploading reports, searching with filters, and an analytics dashboard to visualize report submissions by department and theme.
+
+---
+
+## 🎨 Design & Development Process
+
+We began by designing the frontend in Figma, then converted it into a fully functional full-stack web application by integrating each feature step by step. Users can upload Kaizen reports by selecting a theme, department, and date. This metadata is stored in Supabase, allowing for efficient, filter-based searching of reports.
+
+---
+
+## 🔐 File Storage
+
+The actual documents are securely uploaded and stored on Google Drive using the Drive API. I also implemented a dynamic analytics dashboard that visualizes key insights, such as the number of reports submitted, categorized by department and theme.
+
+---
+
+## 📈 Outcome & Impact
+
+This project gave me a strong end-to-end experience in building scalable, real-world software while leading both the planning and technical execution.
