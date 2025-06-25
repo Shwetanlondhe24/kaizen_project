@@ -4,7 +4,7 @@
 **Role –** Team Leader and Full Stack Developer  
 **Tech Stack –** Next.js (TypeScript), Supabase, Google Drive API, Vercel, Figma  
 **Live Project –** [https://kaizen-bank.vercel.app/](https://kaizen-bank.vercel.app/)  
-**GitHub –** [https://github.com/Shwetanlondhe24/kaizen_project](https://github.com/Shwetanlondhe24/kaizen_project)
+**Smartsheet Analytics video –** [https://drive.google.com/drive/folders/1QQGu44JTSNIMkHenGfmXC6K0MyAdNNuS?usp=sharing](https://drive.google.com/drive/folders/1QQGu44JTSNIMkHenGfmXC6K0MyAdNNuS?usp=sharing)
 
 ---
 
